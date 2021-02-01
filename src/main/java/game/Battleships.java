@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class Battleships {
 
     private int gridSize = 10;
-    private int fleetSize = 5;
     private int playerShips = 0;
     private int computerShips = 0;
     private Map<String, Field> grid;
@@ -27,6 +26,7 @@ public class Battleships {
     }
 
     public void runGame() {
+        int fleetSize = 5;
         System.out.println("**** Welcome to Battle Ships game ****\n");
         System.out.println("Right now, the sea is empty\n");
         printGrid();
@@ -180,7 +180,7 @@ public class Battleships {
         private int shipOwner;
         private boolean revealed;
 
-        public Field() {
+        Field() {
             this.shipOwner = 0;
             this.revealed = false;
         }
