@@ -1,8 +1,8 @@
 package game;
 
 public abstract class Player {
-    protected  String name;
-    protected  Grid grid;
+    protected String name;
+    protected Grid grid;
     protected int numberOfShips;
 
     public Player(String name) {
