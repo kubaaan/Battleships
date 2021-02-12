@@ -6,7 +6,7 @@ import java.util.Random;
 public class ComputerPlayer extends Player {
 
     public ComputerPlayer() {
-        super("Computer");
+        super("Computer ");
     }
 
     @Override

@@ -12,7 +12,6 @@ public class Battleships {
     }
 
     public void runGame() {
-        int fleetSize = 5;
         System.out.println("**** Welcome to Battle Ships game ****\n");
         System.out.println("Right now, the sea is empty\n");
         humanPlayer.grid.printGrid(true);

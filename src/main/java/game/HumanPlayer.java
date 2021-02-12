@@ -10,11 +10,11 @@ public class HumanPlayer extends Player {
 
     @Override
     public void deployShip(ShipType shipType) {
-        String inputMessage = "Enter X coordinate for your " + (numberOfShips + 1) + ". ship:";
+        String inputMessage = "Enter X coordinate for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int x = getUserInputCoordinate(inputMessage);
-        inputMessage = "Enter Y coordinate for your " + (numberOfShips + 1) + ". ship:";
+        inputMessage = "Enter Y coordinate for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int y = getUserInputCoordinate(inputMessage);
-        inputMessage = "Enter direction (h/v) for your " + (numberOfShips + 1) + ". ship:";
+        inputMessage = "Enter direction (h/v) for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int dir = getUserInputDirection(inputMessage);
 
         if (grid.deployShip(x, y, dir, shipType)) {

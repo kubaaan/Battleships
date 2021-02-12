@@ -5,4 +5,5 @@ public enum FieldStatus {
     OCCUPIED,
     HIT,
     MISSED;
+    int temp;
 }

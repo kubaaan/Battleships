@@ -82,7 +82,7 @@ public class Grid {
         return true;
     }
 
-    protected void printGrid(boolean mapRevealed) {
+    protected void printGrid(boolean mapIsRevealed) {
 
         Runnable printXAxe = () -> {
             System.out.print("   ");
@@ -98,9 +98,9 @@ public class Grid {
             System.out.print(i + " |");
             for (int j = 0; j < SIZE; j++) {
                 Field currentField = fields.get(i + Integer.toString(j));
-                if(mapRevealed) {
+                if(mapIsRevealed) {
                     System.out.print(PLAYER_MARKERS.get(currentField.status));
-                }else if(!mapRevealed){
+                }else if(!mapIsRevealed){
                     switch (currentField.status){
                         case HIT:
                         case MISSED:

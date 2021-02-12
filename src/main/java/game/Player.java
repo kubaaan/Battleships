@@ -26,7 +26,7 @@ public abstract class Player {
     }
 
     public abstract void deployShip(ShipType shipType);
-    public abstract void guess(Player rival);
+    public abstract void guess(Player opponent);
 
     public List<ShipType> getShipsList() {
         return shipsList;
