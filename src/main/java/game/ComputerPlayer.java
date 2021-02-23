@@ -1,17 +1,16 @@
 package game;
 
-
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
 
     public ComputerPlayer() {
-        super("Computer ");
+        super("Computer");
     }
 
     @Override
     public void deployShip(ShipType shipType) {
-
+      
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);

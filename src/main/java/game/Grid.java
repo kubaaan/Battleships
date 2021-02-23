@@ -6,6 +6,7 @@ import java.util.Map;
 public class Grid {
 
     public static final int SIZE = 10;
+  
     public static final Map<FieldStatus, String> PLAYER_MARKERS
             = (Map.of(FieldStatus.HIT, "X",
             FieldStatus.OCCUPIED, "@",

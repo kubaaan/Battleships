@@ -1,19 +1,19 @@
 package game;
 
-
 public class Battleships {
 
     private Player humanPlayer;
     private Player computerPlayer;
 
     public Battleships() {
-        humanPlayer = new HumanPlayer("Player");
+        humanPlayer = new HumanPlayer("Human");
         computerPlayer = new ComputerPlayer();
     }
 
     public void runGame() {
         System.out.println("**** Welcome to Battle Ships game ****\n");
         System.out.println("Right now, the sea is empty\n");
+      
         humanPlayer.grid.printGrid(true);
         System.out.println("Deploy your ships:");
 

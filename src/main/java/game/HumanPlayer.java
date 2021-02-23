@@ -54,7 +54,6 @@ public class HumanPlayer extends Player {
 
     private int getUserInputCoordinate(String displayedMessage) {
         Scanner scanner = new Scanner(System.in);
-
         while (true) {
             System.out.print(displayedMessage);
             if (scanner.hasNextInt()) {
@@ -67,7 +66,6 @@ public class HumanPlayer extends Player {
             System.out.println("Invalid coordinate");
         }
     }
-
     private int getUserInputDirection(String displayedMessage){
         Scanner scanner = new Scanner(System.in);
 
