@@ -6,10 +6,12 @@ import java.util.Map;
 public class Grid {
 
     public static final int SIZE = 10;
-    public static final Map<Integer, String> PLAYER_MARKERS
-            = (Map.of(0, "X",
-            1, "@",
-            2, "$"));
+  
+    public static final Map<FieldStatus, String> PLAYER_MARKERS
+            = (Map.of(FieldStatus.HIT, "X",
+            FieldStatus.OCCUPIED, "@",
+            FieldStatus.MISSED, "O",
+            FieldStatus.EMPTY, " "));
 
     private Map<String,Field> fields;
 
@@ -22,28 +24,66 @@ public class Grid {
         }
     }
 
-    public int checkFieldShipOwner(String coordinates){
-       return fields.get(coordinates).shipOwner;
+    public FieldStatus getFieldStatus(String coordinate){
+        return fields.get(coordinate).status;
     }
 
-    public boolean checkIfFieldIsRevealed(String coordinates){
-        return fields.get(coordinates).revealed;
-    }
-
-    public void markGuessedField(String coordinates){
-        fields.get(coordinates).revealed = true;
-    }
-
-    public boolean deployShip(int x, int y, int player) {
-        Field currentField = fields.get(x + Integer.toString(y));
-        if (currentField.shipOwner == 0) {
-            currentField.shipOwner = player;
-            return true;
+    private boolean checkIfDeploymentPossible(int x, int y, int dir, ShipType shipType){
+        Field currentField;
+        int shipsLength = shipType.getLength();
+        if(dir==104){
+            //if horizontal
+            if((shipsLength+x)>SIZE){
+                return false;
+            }
+            for(int l=0; l < shipsLength; l++){
+                currentField = fields.get(y + Integer.toString(x+l));
+                if(currentField.status != FieldStatus.EMPTY){
+                    return false;
+                }
+            }
+        }else if(dir == 118){
+            //if vertical
+            if((shipsLength+y)>SIZE){
+                return false;
+            }
+            for(int l=0; l < shipsLength; l++){
+                currentField = fields.get((y+l) + Integer.toString(x));
+                if(currentField.status != FieldStatus.EMPTY){
+                    return false;
+                }
+            }
+        }else{
+            return false;
         }
-        return false;
+        return true;
     }
 
-    protected void printGrid() {
+    public boolean deployShip(int x, int y, int dir, ShipType shipType) {
+        Field currentField;
+        int shipsLength = shipType.getLength();
+        if(!checkIfDeploymentPossible(x, y, dir, shipType)){
+            return false;
+        }
+        if(dir==104){
+            //if horizontal
+            for(int l=0; l < shipsLength; l++){
+                currentField = fields.get(y + Integer.toString(x+l));
+                currentField.status = FieldStatus.OCCUPIED;
+            }
+        }else if(dir == 118){
+            //if vertical
+            for(int l=0; l < shipsLength; l++){
+                currentField = fields.get((y+l) + Integer.toString(x));
+                currentField.status = FieldStatus.OCCUPIED;
+            }
+        }else{
+            return false;
+        }
+        return true;
+    }
+
+    protected void printGrid(boolean mapIsRevealed) {
 
         Runnable printXAxe = () -> {
             System.out.print("   ");
@@ -58,28 +98,35 @@ public class Grid {
         for (int i = 0; i < SIZE; i++) {
             System.out.print(i + " |");
             for (int j = 0; j < SIZE; j++) {
-                Field currentField = fields.get(j + Integer.toString(i));
-                System.out.print(currentField.revealed || (currentField.shipOwner == 1)
-                        ? PLAYER_MARKERS.get(currentField.shipOwner) : " ");
+                Field currentField = fields.get(i + Integer.toString(j));
+                if(mapIsRevealed) {
+                    System.out.print(PLAYER_MARKERS.get(currentField.status));
+                }else if(!mapIsRevealed){
+                    switch (currentField.status){
+                        case HIT:
+                        case MISSED:
+                            System.out.print(PLAYER_MARKERS.get(currentField.status));
+                            break;
+                        default:
+                            System.out.print(PLAYER_MARKERS.get(FieldStatus.EMPTY));
+                    }
+                }
             }
             System.out.println("| " + i);
         }
-
         printXAxe.run();
     }
 
-    protected void printGrid(int playerShips, int computerShips){
-        printGrid();
-        System.out.println("\nYour ships: " + playerShips + " | Computer ships: " + computerShips + "\n");
+    public void markStatusOnMap(String coordinates, FieldStatus fieldStatus){
+        fields.get(coordinates).status = fieldStatus;
+        System.out.println(fields.get(coordinates).status);
     }
 
     class Field {
-        private int shipOwner;
-        private boolean revealed;
+        private FieldStatus status;
 
         Field() {
-            this.shipOwner = 0;
-            this.revealed = false;
+            this.status = FieldStatus.EMPTY;
         }
     }
 }
