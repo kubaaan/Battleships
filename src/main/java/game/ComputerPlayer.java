@@ -10,12 +10,11 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void deployShip(ShipType shipType) {
-      
+
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);
         int dir = random.nextInt(2);
-
         if (grid.deployShip(x, y, (dir==0)?104:118, shipType)) {
             this.numberOfShips++;
         } else {

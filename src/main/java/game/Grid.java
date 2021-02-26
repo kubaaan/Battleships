@@ -14,7 +14,6 @@ public class Grid {
             FieldStatus.EMPTY, " "));
 
     private Map<String,Field> fields;
-
     public Grid() {
         this.fields = new HashMap<>();
         for (int i = 0; i < SIZE; i++) {

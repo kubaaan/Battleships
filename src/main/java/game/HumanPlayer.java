@@ -16,7 +16,6 @@ public class HumanPlayer extends Player {
         int y = getUserInputCoordinate(inputMessage);
         inputMessage = "Enter direction (h/v) for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int dir = getUserInputDirection(inputMessage);
-
         if (grid.deployShip(x, y, dir, shipType)) {
             numberOfShips++;
             System.out.println("Player ship " + numberOfShips + " has been deployed");
