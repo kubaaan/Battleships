@@ -1,11 +1,14 @@
-package game;
+package game.player;
+
+import game.grid.Grid;
+import game.grid.ShipType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Player {
     protected  String name;
-    protected  Grid grid;
+    protected Grid grid;
     protected int numberOfShips;
     protected int shipPoints;
     private List<ShipType> shipsList;
@@ -28,7 +31,15 @@ public abstract class Player {
     public abstract void deployShip(ShipType shipType);
     public abstract void guess(Player opponent);
 
+    public void printGrid(boolean mapIsRevealed) {
+        this.grid.printGrid(mapIsRevealed);
+    }
+
     public List<ShipType> getShipsList() {
         return shipsList;
+    }
+
+    public int getShipPoints() {
+        return shipPoints;
     }
 }
