@@ -1,4 +1,4 @@
-package game;
+package game.grid;
 
 public enum ShipType {
     CARRIER(5),
@@ -7,12 +7,14 @@ public enum ShipType {
     SUBMARINE_2(3),
     DESTROYER(2);
 
-    private int length;
+    private final int LENGTH;
+
     ShipType(int length) {
-        this.length=length;
+        this.LENGTH = length;
     }
 
     public int getLength() {
-        return length;
+        return LENGTH;
     }
 }
+

@@ -1,4 +1,8 @@
-package game;
+package game.player;
+
+import game.grid.FieldStatus;
+import game.grid.Grid;
+import game.grid.ShipType;
 
 import java.util.Scanner;
 
@@ -35,7 +39,7 @@ public class HumanPlayer extends Player {
         String coordinates = y + Integer.toString(x);
 
         FieldStatus status = rival.grid.getFieldStatus(coordinates);
-        switch (status){
+        switch (status) {
             case EMPTY:
                 //missed shot
                 rival.grid.markStatusOnMap(coordinates, FieldStatus.MISSED);
@@ -54,7 +58,7 @@ public class HumanPlayer extends Player {
     private int getUserInputCoordinate(String displayedMessage) {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.print(displayedMessage);
+            System.out.println(displayedMessage);
             if (scanner.hasNextInt()) {
                 int userEntry = scanner.nextInt();
                 if (userEntry >= 0 && userEntry < Grid.SIZE) {
@@ -65,24 +69,28 @@ public class HumanPlayer extends Player {
             System.out.println("Invalid coordinate");
         }
     }
-    private int getUserInputDirection(String displayedMessage){
+
+    private int getUserInputDirection(String displayedMessage) {
         Scanner scanner = new Scanner(System.in);
 
-        while(true){
+        while (true) {
             System.out.println(displayedMessage);
-            if (scanner.hasNext()){
-                String in = scanner.nextLine();
-                if(in.equals("h")){
-                    return 104;
-                }else if(in.equals("v")){
-                    return 118;
-                }else{
-                    scanner.nextLine();
-                    System.out.println("Invalid direction");
+
+            if (!scanner.hasNextInt()) {
+                if (scanner.hasNext()) {
+                    String in = scanner.nextLine();
+                    if (in.equals("h")) {
+                        return 104;
+                    } else if (in.equals("v")) {
+                        return 118;
+                    } else {
+                        System.out.println("Invalid direction");
+                    }
                 }
+            } else {
+                scanner.nextLine();
+                System.out.println("Invalid direction");
             }
-            scanner.nextLine();
-            System.out.println("Invalid direction");
         }
     }
 }
