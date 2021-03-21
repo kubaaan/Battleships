@@ -1,20 +1,39 @@
 package game.player;
 
-import game.*;
-import game.grid.FieldStatus;
-import game.grid.Grid;
+import game.algorithm.Algorithm;
+import game.algorithm.AlgorithmType;
+import game.algorithm.HuntTargetAlgorithm;
+import game.algorithm.RandomAlgorithm;
 import game.grid.ShipType;
 
 import java.util.*;
 
 public class ComputerPlayer extends Player {
 
-    private boolean targetMode;
-    private Queue<String> targets = new LinkedList<>();
+    private final Algorithm shootingAlgorithm;
 
     public ComputerPlayer() {
-        super("Computer");
-        this.targetMode = false;
+        this("Computer", AlgorithmType.HUNT_TARGET);
+    }
+
+    public ComputerPlayer(String name, AlgorithmType algorithmType) {
+        super(name);
+        switch (algorithmType) {
+            case HUNT_TARGET:
+                this.shootingAlgorithm = new HuntTargetAlgorithm();
+                break;
+            case RANDOM:
+            default:
+                this.shootingAlgorithm = new RandomAlgorithm();
+                break;
+        }
+    }
+
+    @Override
+    public void deployShips() {
+        for (ShipType shipType : getShipsList()) {
+            deployShip(shipType);
+        }
     }
 
     @Override
@@ -33,58 +52,20 @@ public class ComputerPlayer extends Player {
     }
 
     @Override
+    public void playTurn(Player rival) {
+        printGrid(false);
+        System.out.println(name.toUpperCase() + "'S TURN");
+        guess(rival);
+    }
+
+    @Override
     public void guess(Player rival) {
 
-        String address = generateAddress();
+        boolean status = shootingAlgorithm.guess(rival.grid);
 
-        FieldStatus status = rival.grid.getFieldStatus(address);
-        switch (status) {
-            case EMPTY:
-                //missed shot
-                rival.grid.markStatusOnMap(address, FieldStatus.MISSED);
-                break;
-            case OCCUPIED:
-                //ship hit
-                addSurroundingsToTargetList(rival.grid, address);
-                this.targetMode = true;
-                rival.grid.markStatusOnMap(address, FieldStatus.HIT);
-                rival.shipPoints--;
-                System.out.println("Computer hit your ship.");
-                break;
-            default:
-                //field already revealed (status MISSED or HIT)
-                guess(rival);
+        if (status) {
+            rival.shipPoints--;
         }
     }
-
-    private String generateAddress() {
-
-        if (this.targetMode) {
-            if (targets.peek() != null) {
-                return targets.poll();
-            } else {
-                this.targetMode = false;
-                return generateAddress();
-            }
-        } else {
-            int x = Utilities.generateRandomCoordinate(grid.SIZE);
-            int y = Utilities.generateRandomCoordinate(grid.SIZE);
-            return x + Integer.toString(y);
-        }
-    }
-
-    private void addSurroundingsToTargetList(Grid grid, String address) {
-
-        List<CoordinateDirection> directions = new LinkedList<>
-                (Arrays.asList(CoordinateDirection.UP, CoordinateDirection.DOWN,
-                        CoordinateDirection.LEFT, CoordinateDirection.RIGHT));
-
-        for (CoordinateDirection direction : directions) {
-            if (grid.isPossibleTarget(address, direction) != null) {
-                targets.add(grid.isPossibleTarget(address, direction));
-            }
-        }
-    }
-
 
 }

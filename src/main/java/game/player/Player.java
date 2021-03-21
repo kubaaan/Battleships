@@ -11,7 +11,7 @@ public abstract class Player {
     protected Grid grid;
     protected int numberOfShips;
     protected int shipPoints;
-    private List<ShipType> shipsList;
+    private final List<ShipType> shipsList;
 
     public Player(String name) {
         this.name = name;
@@ -28,7 +28,9 @@ public abstract class Player {
         }
     }
 
+    public abstract void deployShips();
     public abstract void deployShip(ShipType shipType);
+    public abstract void playTurn(Player opponent);
     public abstract void guess(Player opponent);
 
     public void printGrid(boolean mapIsRevealed) {
