@@ -13,6 +13,15 @@ public class HumanPlayer extends Player {
     }
 
     @Override
+    public void deployShips() {
+        System.out.println("Deploy your ships:");
+
+        for (ShipType shipType : getShipsList()) {
+            deployShip(shipType);
+        }
+    }
+
+    @Override
     public void deployShip(ShipType shipType) {
         String inputMessage = "Enter X coordinate for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int x = getUserInputCoordinate(inputMessage);
@@ -28,6 +37,13 @@ public class HumanPlayer extends Player {
             this.deployShip(shipType);
         }
         grid.printGrid(true);
+    }
+
+    @Override
+    public void playTurn(Player rival) {
+        System.out.println(name.toUpperCase() + "'S TURN");
+        printGrid(true);
+        guess(rival);
     }
 
     @Override

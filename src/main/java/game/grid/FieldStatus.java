@@ -4,6 +4,5 @@ public enum FieldStatus {
     EMPTY,
     OCCUPIED,
     HIT,
-    MISSED;
-    int temp;
+    MISSED
 }
