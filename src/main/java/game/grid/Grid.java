@@ -1,20 +1,14 @@
 package game.grid;
 
+import game.Utilities;
+import lombok.Getter;
+
 import java.util.*;
 
 public class Grid {
 
     public static final int SIZE = 10;
-
-    public static final Map<FieldStatus, String> PLAYER_MARKERS
-            = (Map.of(FieldStatus.HIT, "X",
-            FieldStatus.OCCUPIED, "@",
-            FieldStatus.MISSED, "O",
-            FieldStatus.EMPTY, " "));
-
     private final Map<String, Field> fields;
-
-
 
     public Grid() {
         this.fields = new HashMap<>();
@@ -29,7 +23,7 @@ public class Grid {
         return fields.get(address).status;
     }
 
-    public Queue<String> getValidSurroundingTargets(String address){
+    public Queue<String> getValidSurroundingTargets(String address) {
 
         List<CoordinateDirection> directions = new LinkedList<>
                 (Arrays.asList(CoordinateDirection.UP, CoordinateDirection.DOWN,
@@ -47,11 +41,11 @@ public class Grid {
     }
 
     private String isPossibleTarget(String address, CoordinateDirection direction) {
-        String examinedAddress = getNeighbourAddress(address, direction);
+        String examinedAddress = Utilities.getNeighbourAddress(address, direction);
 
-        if(isFieldInGrid(examinedAddress) && !isFieldRevealed(examinedAddress)){
+        if (isFieldInGrid(examinedAddress) && !isFieldRevealed(examinedAddress)) {
             return examinedAddress;
-        }else {
+        } else {
             return null;
         }
     }
@@ -64,23 +58,7 @@ public class Grid {
         return fields.get(address).isRevealed();
     }
 
-    private String getNeighbourAddress(String address, CoordinateDirection direction) {
-        int x = readCoordinateFromAddress(address,"x") + direction.getHORIZONTAL_MOVEMENT();
-        int y = readCoordinateFromAddress(address,"y") + direction.getVERTICAL_MOVEMENT();
-
-        return convertCoordinatesToAddress(x,y);
-    }
-
-    private int readCoordinateFromAddress(String address, String axe) {
-        char coordinate = address.charAt(axe.equals("x") ? 0 : 1);
-        return Character.getNumericValue(coordinate);
-    }
-
-    private String convertCoordinatesToAddress(int x, int y) {
-        return x + Integer.toString(y);
-    }
-
-    private boolean checkIfDeploymentPossible(int x, int y, int dir, ShipType shipType){
+    private boolean checkIfDeploymentPossible(int x, int y, int dir, ShipType shipType) {
         Field currentField;
         int shipLength = shipType.getLength();
         if (dir == 104) {
@@ -136,37 +114,7 @@ public class Grid {
     }
 
     public void printGrid(boolean mapIsRevealed) {
-
-        Runnable printXAxe = () -> {
-            System.out.print("   ");
-            for (int i = 0; i < SIZE; i++) {
-                System.out.print(i);
-            }
-            System.out.println();
-        };
-
-        printXAxe.run();
-
-        for (int i = 0; i < SIZE; i++) {
-            System.out.print(i + " |");
-            for (int j = 0; j < SIZE; j++) {
-                Field currentField = fields.get(j + Integer.toString(i));
-                if (mapIsRevealed) {
-                    System.out.print(PLAYER_MARKERS.get(currentField.status));
-                } else {
-                    switch (currentField.status) {
-                        case HIT:
-                        case MISSED:
-                            System.out.print(PLAYER_MARKERS.get(currentField.status));
-                            break;
-                        default:
-                            System.out.print(PLAYER_MARKERS.get(FieldStatus.EMPTY));
-                    }
-                }
-            }
-            System.out.println("| " + i);
-        }
-        printXAxe.run();
+        GridPrinter.printGrid(fields, mapIsRevealed);
     }
 
     public void markStatusOnMap(String coordinates, FieldStatus fieldStatus) {
@@ -174,37 +122,16 @@ public class Grid {
         System.out.println(fields.get(coordinates).status);
     }
 
-    public enum CoordinateDirection {
-        UP(0,-1),
-        DOWN(0,1),
-        LEFT(-1,0),
-        RIGHT(1,0);
-
-        private final int HORIZONTAL_MOVEMENT;
-        private final int VERTICAL_MOVEMENT;
-
-        CoordinateDirection(int x, int y) {
-            this.HORIZONTAL_MOVEMENT = x;
-            this.VERTICAL_MOVEMENT = y;
-        }
-
-        public int getHORIZONTAL_MOVEMENT() {
-            return HORIZONTAL_MOVEMENT;
-        }
-
-        public int getVERTICAL_MOVEMENT() {
-            return VERTICAL_MOVEMENT;
-        }
-    }
 
     class Field {
+        @Getter
         private FieldStatus status;
 
         Field() {
             this.status = FieldStatus.EMPTY;
         }
 
-        private boolean isRevealed(){
+        private boolean isRevealed() {
             return status == FieldStatus.HIT || status == FieldStatus.MISSED;
         }
     }
