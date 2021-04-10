@@ -4,6 +4,9 @@ import java.util.Map;
 
 public class GridPrinter {
 
+    private GridPrinter() {
+    }
+
     public static final Map<FieldStatus, String> PLAYER_MARKERS
             = (Map.of(FieldStatus.HIT, "X",
             FieldStatus.OCCUPIED, "@",
@@ -43,5 +46,4 @@ public class GridPrinter {
         }
         printXAxe.run();
     }
-
 }

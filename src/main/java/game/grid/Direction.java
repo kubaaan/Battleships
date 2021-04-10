@@ -2,7 +2,7 @@ package game.grid;
 
 import lombok.Getter;
 
-public enum CoordinateDirection {
+public enum Direction {
 
         UP(0, -1),
         DOWN(0, 1),
@@ -14,7 +14,7 @@ public enum CoordinateDirection {
         @Getter
         private final int VERTICAL_MOVEMENT;
 
-        CoordinateDirection(int x, int y) {
+        Direction(int x, int y) {
             this.HORIZONTAL_MOVEMENT = x;
             this.VERTICAL_MOVEMENT = y;
         }

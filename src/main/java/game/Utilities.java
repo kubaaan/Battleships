@@ -1,6 +1,6 @@
 package game;
 
-import game.grid.CoordinateDirection;
+import game.grid.Direction;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -20,9 +20,15 @@ public class Utilities {
         return Character.getNumericValue(coordinate);
     }
 
-    public static String getNeighbourAddress(String address, CoordinateDirection direction) {
-        int x = readCoordinateFromAddress(address, "x") + direction.getHORIZONTAL_MOVEMENT();
-        int y = readCoordinateFromAddress(address, "y") + direction.getVERTICAL_MOVEMENT();
+    public static String getNeighbourAddress(String address, Direction direction) {
+        return getNeighbourAddress(address, direction, 1);
+    }
+
+    public static String getNeighbourAddress(String address, Direction direction, int moveLength) {
+        int x = readCoordinateFromAddress(address, "x")
+                + moveLength * direction.getHORIZONTAL_MOVEMENT();
+        int y = readCoordinateFromAddress(address, "y")
+                + moveLength * direction.getVERTICAL_MOVEMENT();
 
         return convertCoordinatesToAddress(x, y);
     }
