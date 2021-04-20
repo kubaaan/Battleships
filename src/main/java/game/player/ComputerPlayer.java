@@ -40,7 +40,6 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void deployShip(ShipType shipType) {
-
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);

@@ -46,6 +46,7 @@ public class ShipDeployer {
                 return false;
             }
         }
+
         return true;
     }
 }

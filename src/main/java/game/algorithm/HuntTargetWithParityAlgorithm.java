@@ -16,7 +16,6 @@ public class HuntTargetWithParityAlgorithm implements Algorithm{private boolean 
         this.targetMode = false;
     }
 
-
     @Override
     public boolean guess(Grid grid) {
 

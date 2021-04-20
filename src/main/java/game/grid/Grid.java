@@ -63,7 +63,6 @@ public class Grid {
                     break;
             }
         }
-
         protected boolean isEmpty() {
             return this.status == FieldStatus.EMPTY;
         }
