@@ -1,15 +1,19 @@
 package game.grid;
 
 import lombok.Getter;
-
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.*;
 
 public class Grid {
 
     public static final int SIZE = 10;
     private final Map<String, Field> fields;
+    @Getter private Map<String, Integer> shipsLocations;
 
     public Grid() {
+        this.shipsLocations = new HashMap<>();
         this.fields = new HashMap<>();
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
@@ -32,7 +36,7 @@ public class Grid {
     }
 
     public boolean deployShip(Ship ship) {
-        return ShipDeployer.deployShip(fields, ship);
+        return ShipDeployer.deployShip(fields, ship, shipsLocations);
     }
 
     class Field {

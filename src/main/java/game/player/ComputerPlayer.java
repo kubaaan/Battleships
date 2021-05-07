@@ -1,5 +1,6 @@
 package game.player;
 
+import game.algorithm.*;
 import game.Utilities;
 import game.algorithm.Algorithm;
 import game.algorithm.AlgorithmType;
@@ -9,7 +10,7 @@ import game.grid.Direction;
 import game.grid.Ship;
 import game.grid.ShipType;
 
-import java.util.*;
+import java.util.Random;
 
 public class ComputerPlayer extends Player {
 
@@ -24,6 +25,9 @@ public class ComputerPlayer extends Player {
         switch (algorithmType) {
             case HUNT_TARGET:
                 this.shootingAlgorithm = new HuntTargetAlgorithm();
+                break;
+            case HUNT_TARGET_WITH_PARITY:
+                this.shootingAlgorithm = new HuntTargetWithParityAlgorithm();
                 break;
             case RANDOM:
             default:
@@ -41,7 +45,6 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void deployShip(ShipType shipType) {
-
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);

@@ -8,7 +8,7 @@ public class ShipDeployer {
     private ShipDeployer() {
     }
 
-    protected static boolean deployShip(Map<String,Grid.Field> fields, Ship ship){
+    protected static boolean deployShip(Map<String,Grid.Field> fields, Ship ship, Map<String, Integer> shipsLocations){
 
         int shipLength = ship.getType().getLength();
         Direction direction = ship.getDirection();
@@ -21,6 +21,7 @@ public class ShipDeployer {
             String examinedAddress =
                     Utilities.getNeighbourAddress(startFieldAddress, direction, l);
             Grid.Field currentField = fields.get(examinedAddress);
+            shipsLocations.put(examinedAddress, shipLength);
             currentField.deploy();
         }
         return true;

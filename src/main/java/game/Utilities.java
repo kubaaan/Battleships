@@ -44,6 +44,22 @@ public class Utilities {
         return x + Integer.toString(y);
     }
 
+    public static String generateParityAddress(int size, int parityLevel){
+        int x = generateRandomCoordinate(size);
+        int y;
+        int par_mod = x%parityLevel;
+        if(par_mod==0){
+            do{
+                y = generateRandomCoordinate(size);
+            }while(y%parityLevel!=0);
+        }else{
+            do{
+                y = generateRandomCoordinate(size);
+            }while((y-par_mod)%parityLevel != 0);
+        }
+        return x + Integer.toString(y);
+    }
+
     public static Queue<String> mergeQueues(Queue<String> q1, Queue<String> q2) {
         Queue<String> mergedQueues = new LinkedList<>();
 
