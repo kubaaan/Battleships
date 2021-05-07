@@ -1,9 +1,12 @@
 package game.player;
 
+import game.Utilities;
 import game.algorithm.Algorithm;
 import game.algorithm.AlgorithmType;
 import game.algorithm.HuntTargetAlgorithm;
 import game.algorithm.RandomAlgorithm;
+import game.grid.Direction;
+import game.grid.Ship;
 import game.grid.ShipType;
 
 import java.util.*;
@@ -44,7 +47,9 @@ public class ComputerPlayer extends Player {
         int y = random.nextInt(10);
         int dir = random.nextInt(2);
 
-        if (grid.deployShip(x, y, (dir == 0) ? 104 : 118, shipType)) {
+        Ship ship = new Ship(x, y, (dir == 0) ? Direction.RIGHT : Direction.DOWN, shipType);
+
+        if (grid.deployShip(ship)) {
             this.numberOfShips++;
         } else {
             this.deployShip(shipType);

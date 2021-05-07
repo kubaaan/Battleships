@@ -19,16 +19,14 @@ public class HuntTargetAlgorithm implements Algorithm{
     public boolean guess(Grid grid) {
 
         String address = generateAddress();
-        FieldStatus status = grid.getFieldStatus(address);
+        FieldStatus status = grid.guess(address);
 
         switch (status) {
             case EMPTY:
                 //missed shot
-                grid.markStatusOnMap(address, FieldStatus.MISSED);
-                return false;
+                 return false;
             case OCCUPIED:
                 //ship hit
-                grid.markStatusOnMap(address, FieldStatus.HIT);
                 addSurroundingsToTargetList(grid, address);
                 this.targetMode = true;
                 return true;

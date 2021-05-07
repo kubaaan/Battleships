@@ -2,6 +2,8 @@ package game.player;
 
 import game.grid.Grid;
 import game.grid.ShipType;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +13,8 @@ public abstract class Player {
     protected String name;
     protected Grid grid;
     protected int numberOfShips;
-    protected int shipPoints;
-    private final List<ShipType> shipsList;
+    @Getter protected int shipPoints;
+    @Getter private final List<ShipType> shipsList;
 
     public Player(String name) {
         this.name = name;
@@ -40,14 +42,6 @@ public abstract class Player {
 
     public void printGrid(boolean mapIsRevealed) {
         this.grid.printGrid(mapIsRevealed);
-    }
-
-    public List<ShipType> getShipsList() {
-        return shipsList;
-    }
-
-    public int getShipPoints() {
-        return shipPoints;
     }
 
     public void printStatistics(int currentTurn) {

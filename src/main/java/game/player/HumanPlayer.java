@@ -1,9 +1,7 @@
 package game.player;
 
-import game.grid.FieldStatus;
-import game.grid.Grid;
-import game.grid.ShipType;
-
+import game.Utilities;
+import game.grid.*;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
@@ -28,8 +26,11 @@ public class HumanPlayer extends Player {
         inputMessage = "Enter Y coordinate for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
         int y = getUserInputCoordinate(inputMessage);
         inputMessage = "Enter direction (h/v) for your " + (numberOfShips + 1) + ". ship: " + shipType.name();
-        int dir = getUserInputDirection(inputMessage);
-        if (grid.deployShip(x, y, dir, shipType)) {
+        Direction dir = getUserInputDirection(inputMessage);
+
+        Ship ship = new Ship(x, y, dir, shipType);
+
+        if (grid.deployShip(ship)) {
             numberOfShips++;
             System.out.println("Player ship " + numberOfShips + " has been deployed");
         } else {
@@ -52,17 +53,15 @@ public class HumanPlayer extends Player {
         int x = getUserInputCoordinate(inputMessage);
         inputMessage = "Enter Y coordinate:";
         int y = getUserInputCoordinate(inputMessage);
-        String coordinates = y + Integer.toString(x);
+        String address = Utilities.convertCoordinatesToAddress(x, y);
 
-        FieldStatus status = rival.grid.getFieldStatus(coordinates);
+        FieldStatus status = rival.grid.guess(address);
         switch (status) {
             case EMPTY:
                 //missed shot
-                rival.grid.markStatusOnMap(coordinates, FieldStatus.MISSED);
                 break;
             case OCCUPIED:
                 //ship hit
-                rival.grid.markStatusOnMap(coordinates, FieldStatus.HIT);
                 rival.shipPoints--;
                 break;
             default:
@@ -86,7 +85,7 @@ public class HumanPlayer extends Player {
         }
     }
 
-    private int getUserInputDirection(String displayedMessage) {
+    private Direction getUserInputDirection(String displayedMessage) {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -96,9 +95,9 @@ public class HumanPlayer extends Player {
                 if (scanner.hasNext()) {
                     String in = scanner.nextLine();
                     if (in.equals("h")) {
-                        return 104;
+                        return Direction.RIGHT;
                     } else if (in.equals("v")) {
-                        return 118;
+                        return Direction.DOWN;
                     } else {
                         System.out.println("Invalid direction");
                     }
