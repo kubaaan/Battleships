@@ -1,6 +1,11 @@
 package game.player;
 
 import game.algorithm.*;
+import game.Utilities;
+import game.algorithm.Algorithm;
+import game.algorithm.AlgorithmType;
+import game.algorithm.HuntTargetAlgorithm;
+import game.algorithm.RandomAlgorithm;
 import game.grid.Direction;
 import game.grid.Ship;
 import game.grid.ShipType;

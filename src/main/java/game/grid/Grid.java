@@ -1,10 +1,10 @@
 package game.grid;
 
 import lombok.Getter;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
+import java.util.*;
 
 public class Grid {
 
@@ -63,6 +63,7 @@ public class Grid {
                     break;
             }
         }
+
         protected boolean isEmpty() {
             return this.status == FieldStatus.EMPTY;
         }

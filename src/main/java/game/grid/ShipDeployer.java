@@ -1,7 +1,6 @@
 package game.grid;
 
 import game.Utilities;
-
 import java.util.Map;
 
 public class ShipDeployer {
@@ -46,7 +45,6 @@ public class ShipDeployer {
                 return false;
             }
         }
-
         return true;
     }
 }
