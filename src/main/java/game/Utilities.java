@@ -26,9 +26,9 @@ public class Utilities {
 
     public static String getNeighbourAddress(String address, Direction direction, int moveLength) {
         int x = readCoordinateFromAddress(address, "x")
-                + moveLength * direction.getHORIZONTAL_MOVEMENT();
+                + moveLength * direction.getHorizontalMovement();
         int y = readCoordinateFromAddress(address, "y")
-                + moveLength * direction.getVERTICAL_MOVEMENT();
+                + moveLength * direction.getVerticalMovement();
 
         return convertCoordinatesToAddress(x, y);
     }

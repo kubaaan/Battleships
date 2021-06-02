@@ -10,12 +10,12 @@ public enum Direction {
         RIGHT(1, 0);
 
         @Getter
-        private final int HORIZONTAL_MOVEMENT;
+        private final int horizontalMovement;
         @Getter
-        private final int VERTICAL_MOVEMENT;
+        private final int verticalMovement;
 
         Direction(int x, int y) {
-            this.HORIZONTAL_MOVEMENT = x;
-            this.VERTICAL_MOVEMENT = y;
+            this.horizontalMovement = x;
+            this.verticalMovement = y;
         }
 }
