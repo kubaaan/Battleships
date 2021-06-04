@@ -53,16 +53,16 @@ body {
     border: 1px solid;
 }
 
-/* .field:hover {
-    background-color: turquoise;
-} */
-
 .hover {
     background-color: blue;
 }
 
 .deployed {
+    background-image: url("../images/board-ship.png");
     background-color: green;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
 }
 
 .invalid {
