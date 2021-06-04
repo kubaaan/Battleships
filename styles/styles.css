@@ -60,3 +60,11 @@ body {
 .hover {
     background-color: blue;
 }
+
+.deployed {
+    background-color: green;
+}
+
+.invalid {
+    background-color: red;
+}
