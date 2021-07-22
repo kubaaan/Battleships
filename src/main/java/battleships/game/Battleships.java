@@ -1,20 +1,34 @@
 package battleships.game;
 
 import battleships.game.algorithm.AlgorithmType;
+import battleships.game.grid.ShipType;
 import battleships.game.player.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Battleships {
 
+    private static Battleships battleships;
     private final Player playerOne;
     private final Player playerTwo;
     private int currentTurn;
+    private final List<ShipType> shipsList;
 
-    public Battleships() {
+    private Battleships() {
         this("playerVsCPU");
     }
 
-    public Battleships(String gameMode) {
+    private Battleships(String gameMode) {
         this.currentTurn = 0;
+
+        this.shipsList = new ArrayList<>();
+        this.shipsList.add(ShipType.CARRIER);
+        this.shipsList.add(ShipType.CRUISER);
+        this.shipsList.add(ShipType.SUBMARINE_1);
+        this.shipsList.add(ShipType.SUBMARINE_2);
+        this.shipsList.add(ShipType.DESTROYER);
+
         if (gameMode.equals("simulation")) {
             playerOne = new ComputerPlayer("CPU1", AlgorithmType.RANDOM);
             playerTwo = new ComputerPlayer("CPU2", AlgorithmType.HUNT_TARGET);
@@ -24,11 +38,17 @@ public class Battleships {
         }
     }
 
-    public void runGame() {
-        System.out.println("**** Welcome to Battle Ships game ****\n");
-        System.out.println("Right now, the sea is empty\n");
+    public static Battleships getBattleships(String gameMode){
 
-        playerOne.printGrid(true);
+        if(Battleships.battleships == null){
+            battleships = new Battleships(gameMode);
+        }
+
+        return battleships;
+    }
+
+    public void runGame() {
+
         playerOne.deployShips();
         playerTwo.deployShips();
 

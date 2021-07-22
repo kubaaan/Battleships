@@ -40,10 +40,6 @@ public abstract class Player {
 
     public abstract void guess(Player opponent);
 
-    public void printGrid(boolean mapIsRevealed) {
-        this.grid.printGrid(mapIsRevealed);
-    }
-
     public void printStatistics(int currentTurn) {
         System.out.println(name);
         System.out.println("Played for " + currentTurn + " turns.");

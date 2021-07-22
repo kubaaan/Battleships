@@ -60,7 +60,6 @@ public class ComputerPlayer extends Player {
 
     @Override
     public void playTurn(Player rival) {
-        printGrid(false);
         System.out.println(name.toUpperCase() + "'S TURN");
         guess(rival);
     }

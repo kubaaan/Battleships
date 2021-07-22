@@ -38,13 +38,11 @@ public class HumanPlayer extends Player {
             System.out.println("The field is already occupied or out of map");
             this.deployShip(shipType);
         }
-        grid.printGrid(true);
     }
 
     @Override
     public void playTurn(Player rival) {
         System.out.println(name.toUpperCase() + "'S TURN");
-        printGrid(true);
         guess(rival);
     }
 

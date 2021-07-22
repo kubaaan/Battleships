@@ -65,6 +65,11 @@ body {
     background-size: 80%;
 }
 
+.revealed {
+    background-color: grey;
+}
+
 .invalid {
     background-color: red;
 }
+

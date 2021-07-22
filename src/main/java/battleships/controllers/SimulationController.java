@@ -3,13 +3,11 @@ package battleships.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
 @Controller
-public class IndexController {
+public class SimulationController {
 
-    @GetMapping({"","/","/index"})
-    public String getIndex(){
-        return "index";
+    @GetMapping("/simulation")
+    public String startSimulation(){
+        return "simulation";
     }
-
 }

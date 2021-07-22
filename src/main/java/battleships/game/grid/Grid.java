@@ -21,44 +21,41 @@ public class Grid {
         }
     }
 
-    public void printGrid(boolean mapIsRevealed) {
-        GridPrinter.printGrid(fields, mapIsRevealed);
-    }
 
     public Queue<String> getValidSurroundingTargets(String address) {
-        return battleships.game.grid.FieldSurroundingsScanner.getValidSurroundingTargets(fields, address);
+        return FieldSurroundingsScanner.getValidSurroundingTargets(fields, address);
     }
 
-    public battleships.game.grid.FieldStatus guess(String address) {
+    public FieldStatus guess(String address) {
         Field targetedField = fields.get(address);
-        return battleships.game.grid.ShotValidator.evaluateShot(targetedField);
+        return ShotValidator.evaluateShot(targetedField);
     }
 
-    public boolean deployShip(battleships.game.grid.Ship ship) {
-        return battleships.game.grid.ShipDeployer.deployShip(fields, ship, shipsLocations);
+    public boolean deployShip(Ship ship) {
+        return ShipDeployer.deployShip(fields, ship, shipsLocations);
     }
 
     class Field {
         @Getter
-        private battleships.game.grid.FieldStatus status;
+        private FieldStatus status;
 
         Field() {
-            this.status = battleships.game.grid.FieldStatus.EMPTY;
+            this.status = FieldStatus.EMPTY;
         }
 
         protected void deploy() {
-            this.status = battleships.game.grid.FieldStatus.OCCUPIED;
+            this.status = FieldStatus.OCCUPIED;
         }
 
         protected void reveal() {
             switch (this.status) {
                 case EMPTY:
                     //missed shot
-                    this.status = battleships.game.grid.FieldStatus.MISSED;
+                    this.status = FieldStatus.MISSED;
                     break;
                 case OCCUPIED:
                     //ship hit
-                    this.status = battleships.game.grid.FieldStatus.HIT;
+                    this.status = FieldStatus.HIT;
                     break;
             }
         }

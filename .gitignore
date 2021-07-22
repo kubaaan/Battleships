@@ -148,3 +148,4 @@ Help.md
 /target/classes/templates/index.html
 /target/classes/static/images/ship.png
 /target/classes/static/styles/styles.css
+/target/classes/static/game.js
