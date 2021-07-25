@@ -12,7 +12,7 @@ public abstract class Player {
 
     private final int startingShipPoints;
     protected String name;
-    protected Grid grid;
+    @Getter protected Grid grid;
     protected int numberOfShips;
     @Getter protected int shipPoints;
     @Getter private final List<ShipType> shipsList;
@@ -37,9 +37,7 @@ public abstract class Player {
         return grid.deployShip(deployRequest);
     }
 
-    public abstract void playTurn(Player opponent);
-
-    public abstract void guess(int address, Player opponent);
+    public abstract int guess(Player opponent);
 
     public void printStatistics(int currentTurn) {
         System.out.println(name);

@@ -3,6 +3,7 @@ package battleships.game.algorithm;
 import battleships.game.Utilities;
 import battleships.game.grid.FieldStatus;
 import battleships.game.grid.Grid;
+import battleships.model.GuessResponse;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
     }
 
     @Override
-    public boolean guess(Grid grid) {
+    public GuessResponse guess(Grid grid) {
 
         int address = generateAddress();
         FieldStatus status = grid.guess(address);
@@ -25,14 +26,14 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
         switch (status) {
             case EMPTY:
                 //missed shot
-                return false;
+                return new GuessResponse(FieldStatus.MISSED, address);
             case OCCUPIED:
                 //ship hit
                 addSurroundingsToTargetList(grid, address);
                 grid.getShipsLocations().remove(address);
                 parityLevel = changeParityLevel(grid.getShipsLocations());
                 this.targetMode = true;
-                return true;
+                return new GuessResponse(FieldStatus.HIT, address);
             default:
                 //field already revealed (status MISSED or HIT)
                 return guess(grid);

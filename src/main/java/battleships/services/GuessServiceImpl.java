@@ -1,5 +1,6 @@
 package battleships.services;
 
+import battleships.game.Battleships;
 import battleships.game.grid.FieldStatus;
 import battleships.model.GuessRequest;
 import battleships.model.GuessResponse;
@@ -15,10 +16,7 @@ public class GuessServiceImpl implements GuessService {
 
     @Override
     public GuessResponse evaluateGuess(int address) {
-        Random random = new Random();
-        int rnd = random.nextInt(99);
-
-        return new GuessResponse(rnd, FieldStatus.HIT);
+        return Battleships.getBattleships().evaluateGuess(address);
     }
 
     @Override

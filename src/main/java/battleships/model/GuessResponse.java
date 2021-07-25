@@ -7,6 +7,6 @@ import lombok.Setter;
 
 @Getter @Setter @AllArgsConstructor
 public class GuessResponse {
-    private int guess;
     private FieldStatus guessResult;
+    private int guess;
 }

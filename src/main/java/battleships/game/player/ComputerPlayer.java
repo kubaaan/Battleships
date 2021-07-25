@@ -2,13 +2,11 @@ package battleships.game.player;
 
 import battleships.game.Battleships;
 import battleships.game.algorithm.*;
-import battleships.game.algorithm.Algorithm;
-import battleships.game.algorithm.AlgorithmType;
-import battleships.game.algorithm.HuntTargetAlgorithm;
-import battleships.game.algorithm.RandomAlgorithm;
+import battleships.game.grid.FieldStatus;
 import battleships.game.grid.ShipType;
 import battleships.game.grid.Direction;
 import battleships.model.DeployRequest;
+import battleships.model.GuessResponse;
 
 import java.util.Map;
 import java.util.Random;
@@ -67,22 +65,16 @@ public class ComputerPlayer extends Player {
         shipList.forEach((ship, length) -> deployShip(ship));
     }
 
-
     @Override
-    public void playTurn(Player rival) {
-        System.out.println(name.toUpperCase() + "'S TURN");
-        int address = 0;
-        guess(address, rival);
-    }
+    public int guess(Player rival) {
 
-    @Override
-    public void guess(int address, Player rival) {
+        GuessResponse guessResponse = shootingAlgorithm.guess(rival.grid);
 
-        boolean status = shootingAlgorithm.guess(rival.grid);
-
-        if (status) {
+        if (guessResponse.getGuessResult() == FieldStatus.HIT) {
             rival.shipPoints--;
         }
+
+        return guessResponse.getGuess();
     }
 
 }

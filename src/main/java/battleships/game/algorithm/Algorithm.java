@@ -1,7 +1,8 @@
 package battleships.game.algorithm;
 
 import battleships.game.grid.Grid;
+import battleships.model.GuessResponse;
 
 public interface Algorithm {
-    boolean guess(Grid grid);
+    GuessResponse guess(Grid grid);
 }

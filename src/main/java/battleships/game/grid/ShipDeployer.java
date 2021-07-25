@@ -38,9 +38,22 @@ public class ShipDeployer {
 
         int endFieldAddress
                 = Utilities.getNeighbourAddress(startFieldAddress, direction, shipLength - 1);
+
         if (!fields.containsKey(endFieldAddress)) {
             return false;
         }
+
+        switch (direction) {
+            case DOWN:
+                if(startFieldAddress/10 != endFieldAddress/10){
+                    return false;
+                }
+            case RIGHT:
+                if(startFieldAddress%10 != endFieldAddress%10){
+                    return false;
+                }
+        }
+
         for (int l = 0; l < shipLength; l++) {
             int examinedAddress = Utilities.getNeighbourAddress(startFieldAddress, direction, l);
             Grid.Field currentField = fields.get(examinedAddress);

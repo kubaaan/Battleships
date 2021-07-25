@@ -1,10 +1,11 @@
 package battleships.game;
 
 import battleships.game.algorithm.AlgorithmType;
+import battleships.game.grid.FieldStatus;
 import battleships.game.grid.ShipType;
 import battleships.game.player.*;
 import battleships.model.DeployRequest;
-import battleships.model.DeployResponse;
+import battleships.model.GuessResponse;
 import lombok.Getter;
 
 import java.util.HashMap;
@@ -16,9 +17,10 @@ public class Battleships {
     private final Player playerOne;
     private final Player playerTwo;
     private int currentTurn;
-    @Getter private static Map<ShipType, Integer> shipsList = new HashMap<>();
+    @Getter
+    private static final Map<ShipType, Integer> shipsList = new HashMap<>();
 
-    static{
+    static {
         shipsList.put(ShipType.CARRIER, ShipType.CARRIER.getLength());
         shipsList.put(ShipType.CRUISER, ShipType.CRUISER.getLength());
         shipsList.put(ShipType.SUBMARINE_1, ShipType.SUBMARINE_1.getLength());
@@ -29,13 +31,6 @@ public class Battleships {
     private Battleships(String gameMode) {
         this.currentTurn = 0;
 
-//        this.shipsList = new HashMap<>();
-//        this.shipsList.put(ShipType.CARRIER, ShipType.CARRIER.getLength());
-//        this.shipsList.put(ShipType.CRUISER, ShipType.CRUISER.getLength());
-//        this.shipsList.put(ShipType.SUBMARINE_1, ShipType.SUBMARINE_1.getLength());
-//        this.shipsList.put(ShipType.SUBMARINE_2, ShipType.SUBMARINE_2.getLength());
-//        this.shipsList.put(ShipType.DESTROYER, ShipType.DESTROYER.getLength());
-
         if (gameMode.equals("simulation")) {
             playerOne = new ComputerPlayer("CPU1", AlgorithmType.RANDOM);
             playerTwo = new ComputerPlayer("CPU2", AlgorithmType.HUNT_TARGET);
@@ -45,34 +40,32 @@ public class Battleships {
         }
     }
 
-    public static void startGame(String gameMode){
+    public static void startGame(String gameMode) {
         Battleships.battleships = new Battleships(gameMode);
     }
 
-    public static Battleships getBattleships(){
+    public static Battleships getBattleships() {
         return battleships;
     }
 
-    public void deployShip(DeployRequest deployRequest){
+    public void deployShip(DeployRequest deployRequest) {
         this.playerOne.deployShip(deployRequest);
+    }
+
+    public GuessResponse evaluateGuess(int address) {
+        FieldStatus guessResult = this.playerTwo.getGrid().guess(address);
+        int guess = this.playerTwo.guess(playerOne);
+        return new GuessResponse(guessResult, guess);
     }
 
     public void runGame() {
 
-
-
         while (playerOne.getShipPoints() != 0 && playerTwo.getShipPoints() != 0) {
             currentTurn++;
-            playTurn();
         }
-
         printStatistics();
     }
 
-    private void playTurn() {
-        playerOne.playTurn(playerTwo);
-        playerTwo.playTurn(playerOne);
-    }
 
     private void printStatistics() {
         Player winner = determineWinner();

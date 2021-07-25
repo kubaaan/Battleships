@@ -60,6 +60,7 @@ $(".player-one .field").click(function (e) {
     gameMode = "guess";
     $(".player-one .field").off("click");
     $(".player-one .field").off("hover");
+    $(".game-header").text("Guess the location of Player Two's ships");
     setPlayerTwoEventListeners();
   }
 });
@@ -86,26 +87,12 @@ function setPlayerTwoEventListeners() {
       const targetAddress = e.target.id.substring(3);
 
       $.get("guess?address=" + targetAddress, function (res) {
-        if (res.guessResult === "HIT") {
+        if (res.guessResult === "OCCUPIED") {
           $("#P2_" + targetAddress).addClass("deployed");
         }
         $("#P2_" + targetAddress).addClass("revealed");
 
         $("#P1_" + res.guess).addClass("revealed");
-        const isGuessDeployed = $("#P1_" + res.guess).hasClass("deployed");
-
-        const request = {
-          guess: res.guess,
-          guessResult: isGuessDeployed ? "HIT" : "EMPTY",
-        };
-
-        $.ajax({
-          url: "guess",
-          type: "POST",
-          dataType: "xml/html/script/json", // expected format for response
-          contentType: "application/json",
-          data: JSON.stringify(request),
-        });
       });
     }
   });

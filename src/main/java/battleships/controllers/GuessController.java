@@ -24,15 +24,14 @@ public class GuessController {
     @GetMapping("/guess")
     public @ResponseBody
     GuessResponse checkGuess (@RequestParam int address){
-
         return guessService.evaluateGuess(address);
     }
 
-    @PostMapping("/guess")
-    public @ResponseBody void saveGuessResult(@RequestBody GuessRequest request){
-
-        guessService.saveGuessResult(request);
-    }
+//    @PostMapping("/guess")
+//    public @ResponseBody void saveGuessResult(@RequestBody GuessRequest request){
+//
+//        guessService.saveGuessResult(request);
+//    }
 
 
 }
