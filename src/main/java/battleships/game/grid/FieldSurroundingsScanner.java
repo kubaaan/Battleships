@@ -14,13 +14,13 @@ public class FieldSurroundingsScanner {
             (Arrays.asList(Direction.UP, Direction.DOWN,
                     Direction.LEFT, Direction.RIGHT));
 
-    public static Queue<String> getValidSurroundingTargets(Map<String, Grid.Field> fields, String address) {
+    public static Queue<Integer> getValidSurroundingTargets(Map<Integer, Grid.Field> fields, int address) {
 
-        Queue<String> targets = new LinkedList<>();
+        Queue<Integer> targets = new LinkedList<>();
 
         for (Direction direction : DIRECTIONS) {
-            String examinedAddress = Utilities.getNeighbourAddress(address, direction);
-            if (isPossibleTarget(fields, examinedAddress) != null) {
+            int examinedAddress = Utilities.getNeighbourAddress(address, direction);
+            if (isPossibleTarget(fields, examinedAddress) != -1) {
                 targets.add(isPossibleTarget(fields, examinedAddress));
             }
         }
@@ -28,20 +28,20 @@ public class FieldSurroundingsScanner {
         return targets;
     }
 
-    private static String isPossibleTarget(Map<String, Grid.Field> fields, String address) {
+    private static int isPossibleTarget(Map<Integer, Grid.Field> fields, int address) {
 
         if (isFieldInGrid(fields, address) && !isFieldRevealed(fields, address)) {
             return address;
         } else {
-            return null;
+            return -1;
         }
     }
 
-    private static boolean isFieldInGrid(Map<String, Grid.Field> fields, String address) {
+    private static boolean isFieldInGrid(Map<Integer, Grid.Field> fields, int address) {
         return fields.containsKey(address);
     }
 
-    private static boolean isFieldRevealed(Map<String, Grid.Field> fields, String address) {
+    private static boolean isFieldRevealed(Map<Integer, Grid.Field> fields, int address) {
         return fields.get(address).isRevealed();
     }
 }

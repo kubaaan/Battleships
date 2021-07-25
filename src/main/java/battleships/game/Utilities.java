@@ -11,22 +11,31 @@ public class Utilities {
     private Utilities() {
     }
 
-    public static String convertCoordinatesToAddress(int x, int y) {
-        return x + Integer.toString(y);
+    public static int convertCoordinatesToAddress(int x, int y) {
+        return 10 * x + y;
     }
 
-    public static int readCoordinateFromAddress(String address, String axe) {
-        char coordinate = address.charAt(axe.equals("x") ? 0 : 1);
-        return Character.getNumericValue(coordinate);
+    public static int readCoordinateFromAddress(int address, String axe) {
+
+        int coordinate;
+
+        if(axe.equals("x")){
+           coordinate = address / 10 ;
+        } else {
+           coordinate = address % 10;
+        }
+
+        return coordinate;
     }
 
-    public static String getNeighbourAddress(String address, Direction direction) {
+    public static int getNeighbourAddress(int address, Direction direction) {
         return getNeighbourAddress(address, direction, 1);
     }
 
-    public static String getNeighbourAddress(String address, Direction direction, int moveLength) {
+    public static int getNeighbourAddress(int address, Direction direction, int moveLength) {
         int x = readCoordinateFromAddress(address, "x")
                 + moveLength * direction.getHorizontalMovement();
+
         int y = readCoordinateFromAddress(address, "y")
                 + moveLength * direction.getVerticalMovement();
 
@@ -38,13 +47,13 @@ public class Utilities {
         return random.nextInt(size);
     }
 
-    public static String generateRandomAddress (int size) {
+    public static int generateRandomAddress (int size) {
         int x = generateRandomCoordinate(size);
         int y = generateRandomCoordinate(size);
-        return x + Integer.toString(y);
+        return 10 * x + y;
     }
 
-    public static String generateParityAddress(int size, int parityLevel){
+    public static int generateParityAddress(int size, int parityLevel){
         int x = generateRandomCoordinate(size);
         int y;
         int par_mod = x%parityLevel;
@@ -57,11 +66,11 @@ public class Utilities {
                 y = generateRandomCoordinate(size);
             }while((y-par_mod)%parityLevel != 0);
         }
-        return x + Integer.toString(y);
+        return 10 * x + y;
     }
 
-    public static Queue<String> mergeQueues(Queue<String> q1, Queue<String> q2) {
-        Queue<String> mergedQueues = new LinkedList<>();
+    public static Queue<Integer> mergeQueues(Queue<Integer> q1, Queue<Integer> q2) {
+        Queue<Integer> mergedQueues = new LinkedList<>();
 
         while (!q1.isEmpty()){
             mergedQueues.add(q1.poll());

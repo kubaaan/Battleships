@@ -3,9 +3,12 @@ package battleships.game;
 import battleships.game.algorithm.AlgorithmType;
 import battleships.game.grid.ShipType;
 import battleships.game.player.*;
+import battleships.model.DeployRequest;
+import battleships.model.DeployResponse;
+import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Battleships {
 
@@ -13,21 +16,25 @@ public class Battleships {
     private final Player playerOne;
     private final Player playerTwo;
     private int currentTurn;
-    private final List<ShipType> shipsList;
+    @Getter private static Map<ShipType, Integer> shipsList = new HashMap<>();
 
-    private Battleships() {
-        this("playerVsCPU");
+    static{
+        shipsList.put(ShipType.CARRIER, ShipType.CARRIER.getLength());
+        shipsList.put(ShipType.CRUISER, ShipType.CRUISER.getLength());
+        shipsList.put(ShipType.SUBMARINE_1, ShipType.SUBMARINE_1.getLength());
+        shipsList.put(ShipType.SUBMARINE_2, ShipType.SUBMARINE_2.getLength());
+        shipsList.put(ShipType.DESTROYER, ShipType.DESTROYER.getLength());
     }
 
     private Battleships(String gameMode) {
         this.currentTurn = 0;
 
-        this.shipsList = new ArrayList<>();
-        this.shipsList.add(ShipType.CARRIER);
-        this.shipsList.add(ShipType.CRUISER);
-        this.shipsList.add(ShipType.SUBMARINE_1);
-        this.shipsList.add(ShipType.SUBMARINE_2);
-        this.shipsList.add(ShipType.DESTROYER);
+//        this.shipsList = new HashMap<>();
+//        this.shipsList.put(ShipType.CARRIER, ShipType.CARRIER.getLength());
+//        this.shipsList.put(ShipType.CRUISER, ShipType.CRUISER.getLength());
+//        this.shipsList.put(ShipType.SUBMARINE_1, ShipType.SUBMARINE_1.getLength());
+//        this.shipsList.put(ShipType.SUBMARINE_2, ShipType.SUBMARINE_2.getLength());
+//        this.shipsList.put(ShipType.DESTROYER, ShipType.DESTROYER.getLength());
 
         if (gameMode.equals("simulation")) {
             playerOne = new ComputerPlayer("CPU1", AlgorithmType.RANDOM);
@@ -38,19 +45,21 @@ public class Battleships {
         }
     }
 
-    public static Battleships getBattleships(String gameMode){
+    public static void startGame(String gameMode){
+        Battleships.battleships = new Battleships(gameMode);
+    }
 
-        if(Battleships.battleships == null){
-            battleships = new Battleships(gameMode);
-        }
-
+    public static Battleships getBattleships(){
         return battleships;
+    }
+
+    public void deployShip(DeployRequest deployRequest){
+        this.playerOne.deployShip(deployRequest);
     }
 
     public void runGame() {
 
-        playerOne.deployShips();
-        playerTwo.deployShips();
+
 
         while (playerOne.getShipPoints() != 0 && playerTwo.getShipPoints() != 0) {
             currentTurn++;

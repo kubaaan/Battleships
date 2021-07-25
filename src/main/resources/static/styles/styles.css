@@ -10,6 +10,11 @@ body {
     margin: 3% auto 2%;
 }
 
+.game-header {
+    margin: 3% auto -1.5%;
+    font-size: 3.5rem;
+}
+
 .ship-image {
     width:40%;
 }
@@ -35,13 +40,14 @@ body {
 
 .gameboard{
     display: inline-flex;
-    margin-top: 3%;;
+    margin-top: 3%;
 }
 
 .wrapper {
     display: grid;
-    grid-template-columns: repeat(10, 0fr);
+    grid-template-rows: repeat(10, 0fr);
     grid-auto-rows: minmax(10px, auto);
+    grid-auto-flow: column;
     border: 1px solid;
     margin: 20px;
 }
@@ -54,7 +60,7 @@ body {
 }
 
 .hover {
-    background-color: blue;
+     background-color: blue;
 }
 
 .deployed {

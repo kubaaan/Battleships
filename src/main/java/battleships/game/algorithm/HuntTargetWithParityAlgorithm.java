@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Queue;
 
 public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean targetMode;
-    private Queue<String> targets = new LinkedList<>();
+    private Queue<Integer> targets = new LinkedList<>();
     private static int parityLevel=2;
 
     public HuntTargetWithParityAlgorithm() {
@@ -19,7 +19,7 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
     @Override
     public boolean guess(Grid grid) {
 
-        String address = generateAddress();
+        int address = generateAddress();
         FieldStatus status = grid.guess(address);
 
         switch (status) {
@@ -39,7 +39,7 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
         }
     }
 
-    private String generateAddress() {
+    private int generateAddress() {
 
         if (this.targetMode) {
             if (targets.peek() != null) {
@@ -52,7 +52,7 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
             return Utilities.generateParityAddress(Grid.SIZE, parityLevel);
         }
     }
-    private int changeParityLevel(Map<String, Integer> shipsLocations){
+    private int changeParityLevel(Map<Integer, Integer> shipsLocations){
         int par_lvl = Integer.MAX_VALUE;
         for(int value : shipsLocations.values()){
             if(value<par_lvl){
@@ -61,8 +61,8 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
         }
         return  par_lvl;
     }
-    private void addSurroundingsToTargetList(Grid grid, String address) {
-        Queue<String> newTargets = grid.getValidSurroundingTargets(address);
+    private void addSurroundingsToTargetList(Grid grid, int address) {
+        Queue<Integer> newTargets = grid.getValidSurroundingTargets(address);
         targets = Utilities.mergeQueues(targets, newTargets);
     }
 }

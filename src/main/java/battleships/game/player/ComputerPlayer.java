@@ -1,5 +1,6 @@
 package battleships.game.player;
 
+import battleships.game.Battleships;
 import battleships.game.algorithm.*;
 import battleships.game.algorithm.Algorithm;
 import battleships.game.algorithm.AlgorithmType;
@@ -7,8 +8,9 @@ import battleships.game.algorithm.HuntTargetAlgorithm;
 import battleships.game.algorithm.RandomAlgorithm;
 import battleships.game.grid.ShipType;
 import battleships.game.grid.Direction;
-import battleships.game.grid.Ship;
+import battleships.model.DeployRequest;
 
+import java.util.Map;
 import java.util.Random;
 
 public class ComputerPlayer extends Player {
@@ -33,39 +35,48 @@ public class ComputerPlayer extends Player {
                 this.shootingAlgorithm = new RandomAlgorithm();
                 break;
         }
+
+        deployShips();
     }
 
-    @Override
-    public void deployShips() {
-        for (ShipType shipType : getShipsList()) {
-            deployShip(shipType);
-        }
-    }
+    private void deployShip(ShipType shipType){
+        DeployRequest deployRequest = createDeployRequest(shipType);
 
-    @Override
-    public void deployShip(ShipType shipType) {
-        Random random = new Random();
-        int x = random.nextInt(10);
-        int y = random.nextInt(10);
-        int dir = random.nextInt(2);
-
-        Ship ship = new Ship(x, y, (dir == 0) ? Direction.RIGHT : Direction.DOWN, shipType);
-
-        if (grid.deployShip(ship)) {
+        if (deployShip(deployRequest)) {
             this.numberOfShips++;
         } else {
             this.deployShip(shipType);
         }
     }
 
+    private DeployRequest createDeployRequest(ShipType shipType){
+
+        Random random = new Random();
+        int x = random.nextInt(10);
+        int y = random.nextInt(10);
+        int dir = random.nextInt(2);
+
+        int address = 10 * x + y;
+        Direction direction = (dir == 0) ? Direction.RIGHT : Direction.DOWN;
+
+        return new DeployRequest(shipType, address, direction, shipType.getLength());
+    }
+
+    private void deployShips() {
+        Map<ShipType,Integer> shipList = Battleships.getShipsList();
+        shipList.forEach((ship, length) -> deployShip(ship));
+    }
+
+
     @Override
     public void playTurn(Player rival) {
         System.out.println(name.toUpperCase() + "'S TURN");
-        guess(rival);
+        int address = 0;
+        guess(address, rival);
     }
 
     @Override
-    public void guess(Player rival) {
+    public void guess(int address, Player rival) {
 
         boolean status = shootingAlgorithm.guess(rival.grid);
 

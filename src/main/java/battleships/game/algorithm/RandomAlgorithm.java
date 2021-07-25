@@ -7,7 +7,7 @@ import battleships.game.grid.Grid;
 public class RandomAlgorithm implements Algorithm {
     @Override
     public boolean guess(Grid grid) {
-        String address = Utilities.generateRandomAddress(Grid.SIZE);
+        int address = Utilities.generateRandomAddress(Grid.SIZE);
         FieldStatus status = grid.guess(address);
 
         switch (status) {

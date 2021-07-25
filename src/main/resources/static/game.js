@@ -1,14 +1,18 @@
-let shipDirection = "vertical";
+let shipDirection = "DOWN";
 let gameMode = "deploy";
+let nextShipName = "";
 let nextShipLength = 0;
-let shipsToDeploy = [];
+let shipsToDeploy;
+let shipsToDeployNames;
 
 //EVENT HANDLERS//
 
 $(document).ready(function (e) {
   $.get("deploy", function (res) {
-    nextShipLength = res.shipsToDeploy.shift();
     shipsToDeploy = res.shipsToDeploy;
+    shipsToDeployNames = Object.keys(shipsToDeploy);
+    nextShipName = shipsToDeployNames.shift();
+    nextShipLength = shipsToDeploy[nextShipName];
   });
 });
 
@@ -18,7 +22,7 @@ $(".player-one .field").click(function (e) {
   if (gameMode === "deploy") {
     if ($(this).hasClass("hover") && !$(this).hasClass("deployed")) {
       hoveredIndex = $(this).index();
-      let incrementFactor = shipDirection === "vertical" ? 10 : 1;
+      let incrementFactor = shipDirection === "RIGHT" ? 10 : 1;
 
       for (var i = 0; i < nextShipLength; i++) {
         let index = hoveredIndex + i * incrementFactor + 1;
@@ -26,17 +30,11 @@ $(".player-one .field").click(function (e) {
         $(".player-one .field:nth-child(" + index + ")").addClass("deployed");
       }
 
-      if (shipsToDeploy.length === 0) {
-        nextShipLength = 0;
-      }
-
-      if (shipsToDeploy.length > 0) {
-        nextShipLength = shipsToDeploy.shift();
-      }
-
       const request = {
+        shipType: nextShipName,
         address: hoveredIndex,
         direction: shipDirection,
+        length: nextShipLength,
       };
 
       $.ajax({
@@ -46,61 +44,72 @@ $(".player-one .field").click(function (e) {
         contentType: "application/json",
         data: JSON.stringify(request),
       });
+
+      if (shipsToDeployNames.length === 0) {
+        nextShipLength = 0;
+      }
+
+      if (shipsToDeployNames.length > 0) {
+        nextShipName = shipsToDeployNames.shift();
+        nextShipLength = shipsToDeploy[nextShipName];
+      }
     }
   }
 
-  if (shipsToDeploy.length === 0 & nextShipLength === 0) {
+  if ((shipsToDeployNames.length === 0) & (nextShipLength === 0)) {
     gameMode = "guess";
     $(".player-one .field").off("click");
     $(".player-one .field").off("hover");
+    setPlayerTwoEventListeners();
   }
 });
 
 $(".player-one .field").contextmenu(function (e) {
   e.preventDefault();
-  shipDirection = shipDirection === "vertical" ? "horizontal" : "vertical";
+  shipDirection = shipDirection === "DOWN" ? "RIGHT" : "DOWN";
   removeHoverClasses();
   addHoverClass($(this).index());
 });
 
-
-$(".player-two .field").hover(function(e){
-  $(this).addClass("hover");
-}, function(e){
-  $(this).removeClass("hover");
-});
-
-$(".player-two .field").click(function(e){
-
-  const targetAddress = e.target.id.substring(3);
-  
-  $.get("guess?address=" + targetAddress, function(res){
-
-    if(res.guessResult === "HIT"){
-      $("#P2_" + targetAddress).addClass("deployed");
+function setPlayerTwoEventListeners() {
+  $(".player-two .field").hover(
+    function (e) {
+      $(this).addClass("hover");
+    },
+    function (e) {
+      $(this).removeClass("hover");
     }
-    $("#P2_" + targetAddress).addClass("revealed");
+  );
 
-    $("#P1_" + res.guess).addClass("revealed");
-    const isGuessDeployed = $("#P1_" + res.guess).hasClass("deployed");
+  $(".player-two .field").click(function (e) {
+    if (!$(this).hasClass("revealed")) {
+      const targetAddress = e.target.id.substring(3);
 
-    const request = {
-      guess: res.guess,
-      guessResult: isGuessDeployed? "HIT" : "EMPTY"
+      $.get("guess?address=" + targetAddress, function (res) {
+        if (res.guessResult === "HIT") {
+          $("#P2_" + targetAddress).addClass("deployed");
+        }
+        $("#P2_" + targetAddress).addClass("revealed");
+
+        $("#P1_" + res.guess).addClass("revealed");
+        const isGuessDeployed = $("#P1_" + res.guess).hasClass("deployed");
+
+        const request = {
+          guess: res.guess,
+          guessResult: isGuessDeployed ? "HIT" : "EMPTY",
+        };
+
+        $.ajax({
+          url: "guess",
+          type: "POST",
+          dataType: "xml/html/script/json", // expected format for response
+          contentType: "application/json",
+          data: JSON.stringify(request),
+        });
+      });
     }
-
-    $.ajax({
-      url: "guess",
-      type: "POST",
-      dataType: "xml/html/script/json", // expected format for response
-      contentType: "application/json",
-      data: JSON.stringify(request),
-    });
-
-  })
-
-
-});
+  });
+}
 
 //SUPPORTING FUNCTIONS//
 
@@ -114,16 +123,16 @@ function removeHoverClasses() {
 }
 
 function addHoverClass(hoveredIndex) {
-  let incrementFactor = shipDirection === "vertical" ? 10 : 1;
+  let incrementFactor = shipDirection === "RIGHT" ? 10 : 1;
   let appliedClass = "hover";
   let endIndex = hoveredIndex + (nextShipLength - 1) * incrementFactor;
 
-  if (shipDirection === "vertical" && endIndex >= 100) {
+  if (shipDirection === "RIGHT" && endIndex >= 100) {
     appliedClass = "invalid";
   }
 
   if (
-    shipDirection === "horizontal" &&
+    shipDirection === "DOWN" &&
     Math.floor(hoveredIndex / 10) != Math.floor(endIndex / 10)
   ) {
     appliedClass = "invalid";
@@ -142,7 +151,7 @@ function addHoverClass(hoveredIndex) {
     let index = hoveredIndex + i * incrementFactor + 1;
 
     if (
-      shipDirection === "horizontal" &&
+      shipDirection === "DOWN" &&
       Math.floor(hoveredIndex / 10) != Math.floor((index - 1) / 10)
     ) {
       break;

@@ -6,7 +6,7 @@ import lombok.Getter;
 public class Ship {
 
     @Getter
-    private final String address;
+    private final int address;
     @Getter
     private final Direction direction;
     @Getter

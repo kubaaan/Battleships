@@ -2,6 +2,7 @@ package battleships.game.player;
 
 import battleships.game.grid.Grid;
 import battleships.game.grid.ShipType;
+import battleships.model.DeployRequest;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -32,13 +33,13 @@ public abstract class Player {
         startingShipPoints = shipPoints;
     }
 
-    public abstract void deployShips();
-
-    public abstract void deployShip(ShipType shipType);
+    public boolean deployShip(DeployRequest deployRequest){
+        return grid.deployShip(deployRequest);
+    }
 
     public abstract void playTurn(Player opponent);
 
-    public abstract void guess(Player opponent);
+    public abstract void guess(int address, Player opponent);
 
     public void printStatistics(int currentTurn) {
         System.out.println(name);

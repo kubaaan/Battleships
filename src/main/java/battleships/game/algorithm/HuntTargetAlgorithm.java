@@ -9,7 +9,7 @@ import java.util.Queue;
 
 public class HuntTargetAlgorithm implements Algorithm {
     private boolean targetMode;
-    private Queue<String> targets = new LinkedList<>();
+    private Queue<Integer> targets = new LinkedList<>();
 
     public HuntTargetAlgorithm() {
         this.targetMode = false;
@@ -18,7 +18,7 @@ public class HuntTargetAlgorithm implements Algorithm {
     @Override
     public boolean guess(Grid grid) {
 
-        String address = generateAddress();
+        int address = generateAddress();
         FieldStatus status = grid.guess(address);
 
         switch (status) {
@@ -36,7 +36,7 @@ public class HuntTargetAlgorithm implements Algorithm {
         }
     }
 
-    private String generateAddress() {
+    private int generateAddress() {
 
         if (this.targetMode) {
             if (targets.peek() != null) {
@@ -50,8 +50,8 @@ public class HuntTargetAlgorithm implements Algorithm {
         }
     }
 
-    private void addSurroundingsToTargetList(Grid grid, String address) {
-        Queue<String> newTargets = grid.getValidSurroundingTargets(address);
+    private void addSurroundingsToTargetList(Grid grid, int address) {
+        Queue<Integer> newTargets = grid.getValidSurroundingTargets(address);
         targets = Utilities.mergeQueues(targets, newTargets);
     }
 }
