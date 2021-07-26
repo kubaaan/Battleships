@@ -4,6 +4,7 @@ import battleships.game.grid.Grid;
 import battleships.game.grid.ShipType;
 import battleships.model.DeployRequest;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,8 @@ public abstract class Player {
     protected String name;
     @Getter protected Grid grid;
     protected int numberOfShips;
-    @Getter protected int shipPoints;
+    @Getter @Setter
+    protected int shipPoints;
     @Getter private final List<ShipType> shipsList;
 
     public Player(String name) {
@@ -34,7 +36,7 @@ public abstract class Player {
     }
 
     public boolean deployShip(DeployRequest deployRequest){
-        return grid.deployShip(deployRequest);
+        return this.grid.deployShip(deployRequest);
     }
 
     public abstract int guess(Player opponent);

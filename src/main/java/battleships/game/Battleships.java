@@ -54,8 +54,19 @@ public class Battleships {
 
     public GuessResponse evaluateGuess(int address) {
         FieldStatus guessResult = this.playerTwo.getGrid().guess(address);
+        if(guessResult==FieldStatus.OCCUPIED){
+            int points = this.playerTwo.getShipPoints()-1;
+            this.playerTwo.setShipPoints(points);
+        }
         int guess = this.playerTwo.guess(playerOne);
-        return new GuessResponse(guessResult, guess);
+
+        GuessResponse guessResponse = new GuessResponse(guessResult, guess);
+
+        if(playerOne.getShipPoints() == 0 || playerTwo.getShipPoints() == 0){
+            guessResponse.setGameEnded(true);
+        }
+
+        return guessResponse;
     }
 
     public void runGame() {

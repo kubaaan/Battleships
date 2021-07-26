@@ -48,10 +48,12 @@ public class ShipDeployer {
                 if(startFieldAddress/10 != endFieldAddress/10){
                     return false;
                 }
+                break;
             case RIGHT:
                 if(startFieldAddress%10 != endFieldAddress%10){
                     return false;
                 }
+                break;
         }
 
         for (int l = 0; l < shipLength; l++) {

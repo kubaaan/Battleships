@@ -59,7 +59,7 @@ $(".player-one .field").click(function (e) {
   if ((shipsToDeployNames.length === 0) & (nextShipLength === 0)) {
     gameMode = "guess";
     $(".player-one .field").off("click");
-    $(".player-one .field").off("hover");
+    $(".player-one .field").off("mouseenter mouseleave");
     $(".game-header").text("Guess the location of Player Two's ships");
     setPlayerTwoEventListeners();
   }
@@ -87,6 +87,15 @@ function setPlayerTwoEventListeners() {
       const targetAddress = e.target.id.substring(3);
 
       $.get("guess?address=" + targetAddress, function (res) {
+        if (res.gameEnded == true) {
+          $.get("endgame", function (res) {
+            $(".game-header").text(res);
+            $(".player-two .field").off("click");
+            $(".player-two .field").off("mouseenter mouseleave");
+            return;
+          });
+        }
+
         if (res.guessResult === "OCCUPIED") {
           $("#P2_" + targetAddress).addClass("deployed");
         }

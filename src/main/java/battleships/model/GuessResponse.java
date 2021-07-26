@@ -9,4 +9,9 @@ import lombok.Setter;
 public class GuessResponse {
     private FieldStatus guessResult;
     private int guess;
+    private boolean isGameEnded;
+
+    public GuessResponse(FieldStatus guessResult, int guess) {
+        this(guessResult, guess, false);
+    }
 }

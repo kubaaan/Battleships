@@ -27,11 +27,10 @@ public class GuessController {
         return guessService.evaluateGuess(address);
     }
 
-//    @PostMapping("/guess")
-//    public @ResponseBody void saveGuessResult(@RequestBody GuessRequest request){
-//
-//        guessService.saveGuessResult(request);
-//    }
+    @GetMapping("/endgame")
+    public @ResponseBody String sendEndGameResults(){
+        return "Game has ended";
+    }
 
 
 }
