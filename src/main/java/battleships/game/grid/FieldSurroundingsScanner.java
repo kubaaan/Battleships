@@ -1,7 +1,6 @@
 package battleships.game.grid;
 
 import battleships.game.Utilities;
-import battleships.game.grid.Direction;
 
 import java.util.*;
 

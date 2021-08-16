@@ -69,7 +69,7 @@ local.properties
 ######################
 /log/
 */target/*
-*/target/classes/
+*/target/classes/*
 
 ######################
 # Gradle
@@ -149,3 +149,8 @@ Help.md
 /target/classes/static/images/ship.png
 /target/classes/static/styles/styles.css
 /target/classes/static/game.js
+/target/classes/static/script/game.js
+/target/classes/static/images/favicon.ico
+/target/classes/static/script/utilities/supportingFunctions.js
+/target/classes/static/script/utilities/gameConfig.js
+/target/classes/templates/simulation.html
