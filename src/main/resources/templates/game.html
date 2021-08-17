@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    
-
     <div class="gameboard">
         <div>
             <h3 class="subtitle">Player One</h3>
@@ -32,6 +30,6 @@
     <h1 class="game-header"  th:text=${headerText}>Game header</h1>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script type="module" src="script/game.js"></script> 
+    <script type="module" th:src="'script/' + ${scriptFile}"></script> 
 </body>
 </html>

@@ -154,3 +154,4 @@ Help.md
 /target/classes/static/script/utilities/supportingFunctions.js
 /target/classes/static/script/utilities/gameConfig.js
 /target/classes/templates/simulation.html
+/target/classes/static/script/simulation.js

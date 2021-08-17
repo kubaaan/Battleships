@@ -23,6 +23,7 @@ public class GameController {
 
         model.addAttribute("idList",fieldIdList);
         model.addAttribute("headerText","Please deploy your ships");
+        model.addAttribute("scriptFile","game.js");
 
         return "game";
     }

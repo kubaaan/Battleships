@@ -1,6 +1,5 @@
 package battleships.controllers;
 
-
 import battleships.game.Battleships;
 import battleships.game.grid.ShipType;
 import battleships.model.DeployRequest;

@@ -1,16 +1,9 @@
 package battleships.controllers;
 
-import battleships.game.grid.FieldStatus;
-import battleships.model.DeployResponse;
-import battleships.model.GuessRequest;
 import battleships.model.GuessResponse;
 import battleships.services.GuessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Controller
 public class GuessController {
