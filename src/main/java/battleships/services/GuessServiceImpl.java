@@ -1,12 +1,9 @@
 package battleships.services;
 
 import battleships.game.Battleships;
-import battleships.game.grid.FieldStatus;
 import battleships.model.GuessRequest;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 import org.springframework.stereotype.Service;
-
-import java.util.Random;
 
 @Service
 public class GuessServiceImpl implements GuessService {
@@ -15,7 +12,7 @@ public class GuessServiceImpl implements GuessService {
     }
 
     @Override
-    public GuessResponse evaluateGuess(int address) {
+    public Guess evaluateGuess(int address) {
         return Battleships.getBattleships().evaluateGuess(address);
     }
 

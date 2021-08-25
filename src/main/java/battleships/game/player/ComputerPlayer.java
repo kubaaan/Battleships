@@ -2,11 +2,9 @@ package battleships.game.player;
 
 import battleships.game.Battleships;
 import battleships.game.algorithm.*;
-import battleships.game.grid.FieldStatus;
-import battleships.game.grid.ShipType;
-import battleships.game.grid.Direction;
+import battleships.game.grid.*;
 import battleships.model.DeployRequest;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 
 import java.util.Map;
 import java.util.Random;
@@ -37,7 +35,7 @@ public class ComputerPlayer extends Player {
         deployShips();
     }
 
-    private void deployShip(ShipType shipType){
+    private void deployShip(ShipType shipType) {
         DeployRequest deployRequest = createDeployRequest(shipType);
 
         if (deployShip(deployRequest)) {
@@ -47,7 +45,7 @@ public class ComputerPlayer extends Player {
         }
     }
 
-    private DeployRequest createDeployRequest(ShipType shipType){
+    private DeployRequest createDeployRequest(ShipType shipType) {
 
         Random random = new Random();
         int x = random.nextInt(10);
@@ -61,20 +59,45 @@ public class ComputerPlayer extends Player {
     }
 
     private void deployShips() {
-        Map<ShipType,Integer> shipList = Battleships.getShipsList();
+        Map<ShipType, Integer> shipList = Battleships.getShipsList();
         shipList.forEach((ship, length) -> deployShip(ship));
     }
 
     @Override
     public int guess(Player rival) {
 
-        GuessResponse guessResponse = shootingAlgorithm.guess(rival.grid);
+        Guess guess = shootingAlgorithm.guess(rival.grid);
 
-        if (guessResponse.getGuessResult() == FieldStatus.HIT) {
+        if (guess.getGuessResult() == FieldStatus.HIT) {
             rival.shipPoints--;
         }
 
-        return guessResponse.getGuess();
+        return guess.getGuess();
     }
 
+    @Override
+    public Guess playTurn(int address, Player rival) {
+
+        int playerShot = this.generateAddress(address);
+        Guess playerGuess = rival.evaluateGuess(playerShot);
+        FieldStatus shotResult = playerGuess.getGuessResult();
+
+        if (shotResult != FieldStatus.EMPTY && shotResult != FieldStatus.OCCUPIED) {
+            return playTurn(address, rival);
+        }
+
+        if (playerGuess.getGuessResult() == FieldStatus.OCCUPIED) {
+            shootingAlgorithm.addOccupiedAddress(playerShot, rival.grid);
+            rival.shipPoints--;
+        }
+        if (rival.getShipPoints() == 0) {
+            playerGuess.setGameEnded(true);
+        }
+        return playerGuess;
+    }
+
+    @Override
+    public int generateAddress(int address) {
+        return shootingAlgorithm.generateAddress();
+    }
 }

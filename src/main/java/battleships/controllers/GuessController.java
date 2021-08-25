@@ -1,6 +1,6 @@
 package battleships.controllers;
 
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 import battleships.services.GuessService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +16,7 @@ public class GuessController {
 
     @GetMapping("/guess")
     public @ResponseBody
-    GuessResponse checkGuess (@RequestParam int address){
+    Guess checkGuess (@RequestParam int address){
         return guessService.evaluateGuess(address);
     }
 

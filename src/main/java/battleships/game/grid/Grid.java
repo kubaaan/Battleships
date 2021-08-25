@@ -36,7 +36,11 @@ public class Grid {
         return ShipDeployer.deployShip(fields, deployRequest, shipsLocations);
     }
 
-    class Field {
+    public Field getField(int address){
+        return fields.get(address);
+    }
+
+    public class Field {
         @Getter
         private FieldStatus status;
 

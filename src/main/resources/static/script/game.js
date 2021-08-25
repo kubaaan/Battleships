@@ -26,7 +26,7 @@ $(".player-one .field").click(function (e) {
       let incrementFactor = config.shipDirection === "RIGHT" ? 10 : 1;
 
       for (var i = 0; i < config.nextShipLength; i++) {
-        let index = hoveredIndex + i * incrementFactor + 1;
+        let index = hoveredIndex + i * incrementFactor;
 
         $(`#P1_${index}`).addClass("deployed");
       }

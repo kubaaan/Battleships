@@ -1,8 +1,10 @@
 package battleships.game.algorithm;
 
 import battleships.game.grid.Grid;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 
 public interface Algorithm {
-    GuessResponse guess(Grid grid);
+    Guess guess(Grid grid);
+    int generateAddress();
+    void addOccupiedAddress(int address, Grid grid);
 }

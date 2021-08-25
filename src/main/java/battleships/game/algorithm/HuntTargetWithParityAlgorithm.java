@@ -3,13 +3,14 @@ package battleships.game.algorithm;
 import battleships.game.Utilities;
 import battleships.game.grid.FieldStatus;
 import battleships.game.grid.Grid;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean targetMode;
+public class HuntTargetWithParityAlgorithm implements Algorithm {
+    private boolean targetMode;
     private Queue<Integer> targets = new LinkedList<>();
     private static int parityLevel=2;
 
@@ -18,7 +19,7 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
     }
 
     @Override
-    public GuessResponse guess(Grid grid) {
+    public Guess guess(Grid grid) {
 
         int address = generateAddress();
         FieldStatus status = grid.guess(address);
@@ -26,21 +27,21 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
         switch (status) {
             case EMPTY:
                 //missed shot
-                return new GuessResponse(FieldStatus.MISSED, address);
+                return new Guess(FieldStatus.MISSED, address);
             case OCCUPIED:
                 //ship hit
-                addSurroundingsToTargetList(grid, address);
+                addSurroundingsToTargetList(address, grid);
                 grid.getShipsLocations().remove(address);
                 parityLevel = changeParityLevel(grid.getShipsLocations());
                 this.targetMode = true;
-                return new GuessResponse(FieldStatus.HIT, address);
+                return new Guess(FieldStatus.HIT, address);
             default:
                 //field already revealed (status MISSED or HIT)
                 return guess(grid);
         }
     }
 
-    private int generateAddress() {
+    public int generateAddress() {
 
         if (this.targetMode) {
             if (targets.peek() != null) {
@@ -62,7 +63,14 @@ public class HuntTargetWithParityAlgorithm implements Algorithm {private boolean
         }
         return  par_lvl;
     }
-    private void addSurroundingsToTargetList(Grid grid, int address) {
+
+    @Override
+    public void addOccupiedAddress(int address, Grid grid) {
+        addSurroundingsToTargetList(address, grid);
+        this.targetMode = true;
+    }
+
+    private void addSurroundingsToTargetList(int address, Grid grid) {
         Queue<Integer> newTargets = grid.getValidSurroundingTargets(address);
         targets = Utilities.mergeQueues(targets, newTargets);
     }

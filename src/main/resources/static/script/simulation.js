@@ -1,4 +1,3 @@
-
 $(document).ready(function (e) {
   $.get("simulate", function (res) {
     const simulationResult = simulationResultAdapter(res);
@@ -23,21 +22,46 @@ function markResultOnBoard(guess) {
   if (guess.gameEnded === true) $(".game-header").text("Game ended");
 }
 
+// function simulationResultAdapter(simulationResult) {
+//   const convertedResult = [];
+
+//   simulationResult.forEach((apiGuess, index) => {
+//     const guessAddress =
+//       index % 2 === 0 ? `#P2_${apiGuess.guess}` : `#P1_${apiGuess.guess}`;
+
+//     const newGuess = {
+//       guess: guessAddress,
+//       guessResult: apiGuess.guessResult,
+//       gameEnded: apiGuess.gameEnded,
+//     };
+
+//     convertedResult.push(newGuess);
+//   });
+
+//   return convertedResult;
+// }
+
 function simulationResultAdapter(simulationResult) {
-  const convertedResult = [];
+  const convertedResult = simulationResult.reduce((total, element) => {
+    let guess = convertApiGuess(element.guessRequest, 0);
+    total.push(guess);
+    guess = convertApiGuess(element.guessResponse, 1);
+    total.push(guess);
+    return total;
+  }, []);
 
-  simulationResult.forEach((apiGuess, index) => {
-    const guessAddress =
-      index % 2 === 0 ? `#P2_${apiGuess.guess}` : `#P1_${apiGuess.guess}`;
-
-    const newGuess = {
-      guess: guessAddress,
-      guessResult: apiGuess.guessResult,
-      gameEnded: apiGuess.gameEnded,
-    };
-
-    convertedResult.push(newGuess);
-  });
-
+  //// napisać funkcję która przerabia adresy strzałów na `#P2_${apiGuess.guess}` : `#P1_${apiGuess.guess}`;
   return convertedResult;
+}
+
+function convertApiGuess(apiGuess, index) {
+  const guessAddress =
+    index % 2 === 0 ? `#P2_${apiGuess.guess}` : `#P1_${apiGuess.guess}`;
+
+  const newGuess = {
+    guess: guessAddress,
+    guessResult: apiGuess.guessResult,
+    gameEnded: apiGuess.gameEnded,
+  };
+  return newGuess;
 }

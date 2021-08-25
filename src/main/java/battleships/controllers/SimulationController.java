@@ -1,8 +1,8 @@
 package battleships.controllers;
 
 import battleships.game.Battleships;
-import battleships.game.grid.FieldStatus;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
+import battleships.model.TurnResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class SimulationController {
 
     @GetMapping("/simulation")
     public String startSimulation(Model model){
-        Battleships.startGame("playerVsCPU");
+        Battleships.startGame("simulation");
 
         List<Integer> fieldIdList = new ArrayList<>();
         for(int i = 0; i < 100; i++){
@@ -31,19 +31,8 @@ public class SimulationController {
 
     @GetMapping("/simulate")
     public @ResponseBody
-    ArrayList<GuessResponse> sendSimulationResult(){
-        ArrayList<GuessResponse> array= new ArrayList<>();
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 1));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 15));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 2));
-        array.add(new GuessResponse(FieldStatus.EMPTY, 24));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 35));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 11));
-        array.add(new GuessResponse(FieldStatus.EMPTY, 10));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 13));
-        array.add(new GuessResponse(FieldStatus.OCCUPIED, 11,true));
-
-
-        return array;
+    ArrayList<TurnResponse> sendSimulationResult(){
+        Battleships.startGame("simulation");
+        return Battleships.getBattleships().simulate();
     }
 }

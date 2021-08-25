@@ -14,6 +14,11 @@ public class HumanPlayer extends Player {
     public int guess(Player rival) {
         return -1;
     }
+
+    @Override
+    public int generateAddress(int address) {
+        return address;
+    }
 }
 
 

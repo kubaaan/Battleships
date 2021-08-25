@@ -5,9 +5,11 @@ import battleships.game.grid.FieldStatus;
 import battleships.game.grid.ShipType;
 import battleships.game.player.*;
 import battleships.model.DeployRequest;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
+import battleships.model.TurnResponse;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,21 +54,31 @@ public class Battleships {
         this.playerOne.deployShip(deployRequest);
     }
 
-    public GuessResponse evaluateGuess(int address) {
-        FieldStatus guessResult = this.playerTwo.getGrid().guess(address);
-        if(guessResult==FieldStatus.OCCUPIED){
-            int points = this.playerTwo.getShipPoints()-1;
-            this.playerTwo.setShipPoints(points);
+    public Guess evaluateGuess(int address) {
+        return evaluateGuess(address, playerOne, playerTwo);
+    }
+
+    public Guess evaluateGuess(int address, Player shootingPlayer, Player targetPlayer) {
+        FieldStatus guessResult = targetPlayer.getGrid().guess(address);
+        if (guessResult == FieldStatus.OCCUPIED) {
+            int points = targetPlayer.getShipPoints() - 1;
+            targetPlayer.setShipPoints(points);
         }
-        int guess = this.playerTwo.guess(playerOne);
+        int guess = targetPlayer.guess(shootingPlayer);
 
-        GuessResponse guessResponse = new GuessResponse(guessResult, guess);
+        Guess guessResponse = new Guess(guessResult, guess);
 
-        if(playerOne.getShipPoints() == 0 || playerTwo.getShipPoints() == 0){
+        if (playerOne.getShipPoints() == 0 || playerTwo.getShipPoints() == 0) {
             guessResponse.setGameEnded(true);
         }
 
         return guessResponse;
+    }
+
+    public TurnResponse playTurn(int address) {
+        Guess playerOneGuess = playerOne.playTurn(address, playerTwo);
+        Guess playerTwoGuess = playerTwo.playTurn(address, playerOne);
+        return new TurnResponse(playerOneGuess, playerTwoGuess);
     }
 
     public void runGame() {
@@ -77,6 +89,18 @@ public class Battleships {
         printStatistics();
     }
 
+    public ArrayList<TurnResponse> simulate() {
+        ArrayList<TurnResponse> simulationResult = new ArrayList<>();
+        TurnResponse playedTurn;
+
+        do {
+            playedTurn = playTurn(-1);
+            simulationResult.add(playedTurn);
+        }
+        while (!playedTurn.isGameEnded());
+
+        return simulationResult;
+    }
 
     private void printStatistics() {
         Player winner = determineWinner();

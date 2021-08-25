@@ -1,9 +1,9 @@
 package battleships.services;
 
 import battleships.model.GuessRequest;
-import battleships.model.GuessResponse;
+import battleships.model.Guess;
 
 public interface GuessService {
-    GuessResponse evaluateGuess(int address);
+    Guess evaluateGuess(int address);
     void saveGuessResult(GuessRequest request);
 }

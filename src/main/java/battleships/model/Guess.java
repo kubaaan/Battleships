@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter @AllArgsConstructor
-public class GuessResponse {
+public class Guess {
     private FieldStatus guessResult;
     private int guess;
     private boolean isGameEnded;
 
-    public GuessResponse(FieldStatus guessResult, int guess) {
+    public Guess(FieldStatus guessResult, int guess) {
         this(guessResult, guess, false);
     }
 }
